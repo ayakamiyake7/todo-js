@@ -3,6 +3,11 @@ const onClickAdd = () => {
   const inputText = document.getElementById("add-text").value;
   document.getElementById("add-text").value = "";
 
+  // 未完了リストに追加
+  createIncompleteTodo(inputText);
+};
+
+const createIncompleteTodo = (todo) => {
   // liを作る
   const li = document.createElement("li");
 
@@ -13,7 +18,7 @@ const onClickAdd = () => {
   // pを作る
   const p = document.createElement("p");
   p.className = "todo-item";
-  p.innerText = inputText;
+  p.innerText = todo;
 
   // 完了ボタンを作成
   const buttonComplete = document.createElement("button");
@@ -25,6 +30,12 @@ const onClickAdd = () => {
     // 戻すボタンを生成してdivタグは以下に設定
     const backButton = document.createElement("button");
     backButton.innerText = "戻す";
+    backButton.addEventListener("click", () => {
+      // TODOの内容を取得し、未完了リストに追加
+      const todoText = backButton.previousElementSibling.innerText;
+      createIncompleteTodo(todoText);
+      backButton.closest("li").remove();
+    });
     moveTarget.firstElementChild.appendChild(backButton);
     // 完了エリアに移動
     document.getElementById("complete-list").appendChild(moveTarget);
